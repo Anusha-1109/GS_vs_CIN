@@ -581,7 +581,7 @@ def plot_shap_importances(pipe, X_train, X_test, feature_names, save_prefix, top
 
 print("🔍 Computing SHAP importances (XGBoost native TreeSHAP)...")
 shap_df = plot_shap_importances(
-    fitted_sbs["XGBoost"], X_tr, X_te, X_all.columns.tolist(), "phase4", top_n=30
+    fitted_sbs["XGBoost"], X_tr, X_te, X_all.columns.tolist(), "phase4", top_n=25
 )
 if not shap_df.empty:
     shap_df.to_csv(os.path.join(RESULTS_DIR, "shap_feature_importances.csv"), index=False)
@@ -596,15 +596,15 @@ cells.append(nbf.v4.new_code_cell("""\
 print("\\n   Top 15 Features by SHAP (XGBoost):")
 print(shap_df.head(15)[["Feature","Mean_SHAP"]].to_string(index=False))
 
-print("\\n\\nModality breakdown of top 30 features:")
-top30 = shap_df.head(30).copy()
-top30["Modality"] = top30["Feature"].apply(lambda f:
+print("\\n\\nModality breakdown of top 25 features:")
+top25 = shap_df.head(25).copy()
+top25["Modality"] = top25["Feature"].apply(lambda f:
     "COSMIC SBS" if f.startswith("MutSig_") else
     ("mRNA Expression" if f.startswith("mRNA_") else "TF Regulon Activity"))
-print(top30.groupby("Modality").size().to_string())
+print(top25.groupby("Modality").size().to_string())
 
 # Display full table
-display(shap_df.head(30).style.background_gradient(subset=["Mean_SHAP"], cmap="YlOrRd"))
+display(shap_df.head(25).style.background_gradient(subset=["Mean_SHAP"], cmap="YlOrRd"))
 """))
 
 # ============================================================
@@ -675,9 +675,9 @@ def plot_shap_beeswarm(pipe, X_test, feature_names, save_prefix, top_n=25):
     plt.show()
     print(f"  📊 Saved SHAP beeswarm → {save_prefix}_shap_beeswarm.png")
 
-print("\\n🐝 Generating SHAP beeswarm plot...")
+print("\\n🐝 Generating SHAP beeswarm plot (Top 25)...")
 plot_shap_beeswarm(
-    fitted_sbs["XGBoost"], X_te, X_all.columns.tolist(), "phase4", top_n=30
+    fitted_sbs["XGBoost"], X_te, X_all.columns.tolist(), "phase4", top_n=25
 )
 """))
 

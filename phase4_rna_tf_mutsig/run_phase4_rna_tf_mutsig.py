@@ -590,9 +590,12 @@ def main():
     print(cm_detail.to_string(index=False))
 
     # SHAP on best CV model (XGBoost had highest 10-CV AUC = 0.915)
-    print("\n🔍 Computing SHAP importances (XGBoost)...")
+    print("\n🔍 Computing SHAP importances (XGBoost, Top 25)...")
     shap_df = plot_shap_importances(
-        fitted_sbs["XGBoost"], X_tr, X_te, X_all.columns.tolist(), "phase4", top_n=30
+        fitted_sbs["XGBoost"], X_tr, X_te, X_all.columns.tolist(), "phase4", top_n=25
+    )
+    plot_shap_importances(
+        fitted_sbs["XGBoost"], X_tr, X_te, X_all.columns.tolist(), "phase4_top30", top_n=30
     )
     if not shap_df.empty:
         shap_df.to_csv(os.path.join(RESULTS_DIR, "shap_feature_importances.csv"), index=False)
@@ -601,9 +604,12 @@ def main():
         print(shap_df.head(15)[["Feature","Mean_SHAP"]].to_string(index=False))
 
     # SHAP beeswarm — shows direction (positive=CIN, negative=GS)
-    print("\n🐝 Generating SHAP beeswarm plot...")
+    print("\n🐝 Generating SHAP beeswarm plot (Top 25)...")
     plot_shap_beeswarm(
-        fitted_sbs["XGBoost"], X_te, X_all.columns.tolist(), "phase4", top_n=30
+        fitted_sbs["XGBoost"], X_te, X_all.columns.tolist(), "phase4", top_n=25
+    )
+    plot_shap_beeswarm(
+        fitted_sbs["XGBoost"], X_te, X_all.columns.tolist(), "phase4_top30", top_n=30
     )
 
     # -----------------------------------------------------------------------
