@@ -72,6 +72,3 @@ Thumbs.db
 # LibreOffice and lock files
 .~lock.*
 *.lock
-
-# Temporary downloaded duplicate folders
-phase4_rna_tf_mutsig_with_shap/
